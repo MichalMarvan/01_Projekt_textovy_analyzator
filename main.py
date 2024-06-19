@@ -53,15 +53,11 @@ print("-"*35)
 # Kód, který ověří, zda se přihlásil správný uživatel
 ## První if pro uživatelské jméno, druhé if a else pro heslo
 
-if uzivatelske_jmeno in UZIVATELE.keys():
-  if UZIVATELE.get(uzivatelske_jmeno) == heslo:
+if uzivatelske_jmeno in UZIVATELE and UZIVATELE[uzivatelske_jmeno] == heslo:
     print("Vítejte uživateli", uzivatelske_jmeno)
-  else:
-    print("Uživatel není registrovaný.", "Program ukončen", sep = "\n")
-    exit()
 else:
-  print("Uživatel není registrovaný.", "Program ukončen", sep = "\n")
-  exit()
+    print("Uživatel není registrovaný.", "Program ukončen", sep="\n")
+    exit()
 
 print("Máme pro vás 3 texty k analýze." , "-" * 35, sep = '\n')
 
