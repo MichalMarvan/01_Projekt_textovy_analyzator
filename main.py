@@ -59,18 +59,18 @@ else:
     print("Uživatel není registrovaný.", "Program ukončen", sep="\n")
     exit()
 
-print("Máme pro vás 3 texty k analýze." , "-" * 35, sep = '\n')
+print(f'{"Máme pro vás"} {len(TEXTS)} {"texty k analýze."}', "-" * 35, sep="\n")
 
 # Zadání čísla textu uživatelem
 
-cislo_textu = int(input("Zadejte číslo od 1 do 3 k výběru textu: "))
+cislo_textu = input(f'{"Zadejte číslo od 1 do"} {len(TEXTS)} {"k výběru textu: "}')
 
 # Výpis vybraného textu na základě vybraného čísla
 
-if cislo_textu in (1, 2, 3):
-  print("-"*35, "Váš vybraný text je: ", TEXTS[cislo_textu - 1], "-"*35, sep = '\n')
+if cislo_textu.isdigit() and cislo_textu in [str(n+1) for n in range(len(TEXTS))]:
+  print("-"*35, "Váš vybraný text je: ", TEXTS[int(cislo_textu) - 1], "-"*35, sep = '\n')
 else:
-  print("Vybral jste špatné číslo!")
+  print("Nezadal jste správný znak. Jsou brány pouze čísla od 1 do", len(TEXTS) ,"- program bude ukončen.")
   exit()
 
 # PRÁCE S TEXTEM:
@@ -78,72 +78,51 @@ else:
 # Příprava slov pro analýzu
 # Rozdělení celého stringu na jednotlivá slova pomocí mezery
 
-vsechna_slova = TEXTS[cislo_textu - 1].split()
+vsechna_slova = TEXTS[int(cislo_textu) - 1].split()
 
 # Očištění jedsnotlivých slov o tečky a čárky, které mohou dělat později při analýze problémy
+# dále přidání různých dalších ¨symbolů, které mohou být ve větách a na konci vět (? ! ; : _ - ")
 
-slova = []
-slova = [slovo.rstrip('.,') for slovo in vsechna_slova]
+slova = list(slovo.rstrip('.,?!;:_-"') for slovo in vsechna_slova)
 
 # alternativně lze také zapsat jako normální for cyklus ne jen jako jednořádkový:
 # for slova_bez_tecky in vsechna_slova:
 #  slova.append(slova_bez_tecky.rstrip('.,'))
 
-# Vypsání počtu slov v textu
-
-print("Ve vybraném textu se nachází", len(slova), "slov")
-
-# Vypsání počtu slov začínající velkým písmenem
-
 pocet_titulnich_slov = 0
-for titulni_slova in slova:
-  if titulni_slova.istitle() == True:
-    pocet_titulnich_slov = pocet_titulnich_slov + 1
-
-print("Ve vybraném textu se nachází", pocet_titulnich_slov, "titulních slov")
-
-# Vypsání počtu slov, která obsahují pouze VELKÁ písmena
-
 pocet_velkych_slov = 0
-for velka_slova in slova:
-  if velka_slova.isupper() == True and velka_slova.isalpha() == True:
-    pocet_velkych_slov = pocet_velkych_slov + 1
-
-print("Ve vybraném textu se nachází", pocet_velkych_slov, "slovo/a s velkými písmeny")
-
-# Vypsání počtu slov, která obsahují pouze malá písmena
-
 pocet_malych_slov = 0
-for mala_slova in slova:
-  if mala_slova.islower() == True and mala_slova.isalpha() == True:
-    pocet_malych_slov = pocet_malych_slov + 1
-
-print("Ve vybraném textu se nachází", pocet_malych_slov, "slovo/a s malými písmeny")
-
-# Vypsání počtu číselných stringů v textu a následné vypsání jejich součtu
-
 pocet_cisel = 0
 cislelne_hodnoty = []
+delky_slov = []
+cetnost_slov = dict ()
 
-for cisla in slova:
-  if cisla.isdigit() == True:
-    pocet_cisel = pocet_cisel + 1
-    cislelne_hodnoty.append(int(cisla))
+for vsechna_slova in slova:  
+# Vypsání počtu slov, která obsahují pouze slova s velkým počáteřčním písmenem
+  if (vsechna_slova.isupper() == True or vsechna_slova.istitle() == True) and vsechna_slova.isalpha() == True:
+    pocet_titulnich_slov += 1
+# Vypsání počtu slov, která obsahují pouze VELKÁ písmena 
+  if vsechna_slova.isupper() == True and vsechna_slova.isalpha() == True:
+    pocet_velkych_slov += 1
+# Vypsání počtu slov, která obsahují pouze malá písmena
+  if vsechna_slova.islower() == True and vsechna_slova.isalpha() == True:
+    pocet_malych_slov +=1
+# Vypsání počtu číselných stringů v textu a následné vypsání jejich součtu
+  if vsechna_slova.isdigit() == True:
+    pocet_cisel += 1
+    cislelne_hodnoty.append(int(vsechna_slova))
+# zjištění délek jednotlivých slov
+  delky_slov.append(len(vsechna_slova))
 
+# souhrn výsledků
+print("Ve vybraném textu se nachází", len(slova), "slov")
+print("Ve vybraném textu se nachází", pocet_titulnich_slov, "titulních slov")
+print("Ve vybraném textu se nachází", pocet_velkych_slov, "slovo/a s velkými písmeny")
+print("Ve vybraném textu se nachází", pocet_malych_slov, "slovo/a s malými písmeny")
 print("Ve vybraném textu se nachází", pocet_cisel, "čísla")
 print("Součet všech čísel je:", sum(cislelne_hodnoty))
 
-# Vypsání sloupcového grafu s četností různých délek slov
-## zjištění délek jednotlivých slov
-
-delky_slov = []
-
-for delky in slova:
-  delky_slov.append(len(delky))
-
-# vypočítání cetnosti slov
-
-cetnost_slov = dict ()
+# vypočítání četnosti slov
 
 for pocty in delky_slov:
     if pocty not in cetnost_slov:
