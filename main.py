@@ -51,7 +51,6 @@ heslo = input("Zadejte své heslo:")
 print("-"*35)
 
 # Kód, který ověří, zda se přihlásil správný uživatel
-## První if pro uživatelské jméno, druhé if a else pro heslo
 
 if uzivatelske_jmeno in UZIVATELE and UZIVATELE[uzivatelske_jmeno] == heslo:
     print("Vítejte uživateli", uzivatelske_jmeno)
@@ -83,7 +82,7 @@ vsechna_slova = TEXTS[int(cislo_textu) - 1].split()
 # Očištění jedsnotlivých slov o tečky a čárky, které mohou dělat později při analýze problémy
 # dále přidání různých dalších ¨symbolů, které mohou být ve větách a na konci vět (? ! ; : _ - ")
 
-slova = list(slovo.rstrip('.,?!;:_-"') for slovo in vsechna_slova)
+slova = list(slovo.strip('.,?!;:_-"') for slovo in vsechna_slova)
 
 # alternativně lze také zapsat jako normální for cyklus ne jen jako jednořádkový:
 # for slova_bez_tecky in vsechna_slova:
@@ -106,7 +105,7 @@ for vsechna_slova in slova:
     pocet_velkych_slov += 1
 # Vypsání počtu slov, která obsahují pouze malá písmena
   if vsechna_slova.islower() == True and vsechna_slova.isalpha() == True:
-    pocet_malych_slov +=1
+    pocet_malych_slov += 1
 # Vypsání počtu číselných stringů v textu a následné vypsání jejich součtu
   if vsechna_slova.isdigit() == True:
     pocet_cisel += 1
@@ -128,7 +127,7 @@ for pocty in delky_slov:
     if pocty not in cetnost_slov:
         cetnost_slov[pocty] = 1
     else:
-        cetnost_slov[pocty] = cetnost_slov[pocty] + 1
+        cetnost_slov[pocty] += 1
 
 # vytvoření grafu na základě délek a četností slov
 
